@@ -86,17 +86,17 @@ The notebook is fully self-contained. Running all cells in order will:
 ### Project Structure
 
 ```
-2568-2_CS403_Final-Submission-68-1_43_wjr-r2/
+Graduating-Project/
 │
 ├── README.md
 ├── requirements.txt
 ├── stock_project.ipynb
 │
-├── final_reports/
-│   ├── 68-2_CS403_68-1_43_wjr-r2.pdf
+├── reports/
+│   ├── Report.pdf
 │
 ├── demo/
-│   └── 68-2_CS403_68-1_43_wjr-r2_demo_link.txt
+│   └── demo_link.txt
 │
 └── outputs/
     ├── correlation_vs_shap.png
