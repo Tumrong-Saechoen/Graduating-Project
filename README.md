@@ -30,7 +30,7 @@
 
 ## Limitations
 
-Stated up front so the results are read correctly:
+So the results are read correctly:
 
 - **Test set used for model selection.** In the submitted version, early stopping (best epoch by F1) and the decision threshold were both chosen on the test set, so reported metrics are optimistic. A validation split is planned.
 - **F1 on the "Up" class is misleading here.** Most stocks ended up with a low threshold (0.30), which makes the model predict Up almost every day. That gives an F1 close to a trivial "always Up" baseline, so accuracy and AUC are the more honest numbers.
