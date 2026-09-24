@@ -1,19 +1,47 @@
-**ชื่อโครงงาน (ไทย)**: การพยากรณ์ทิศทางราคาหุ้นด้วย LSTM และ Attention Mechanism ร่วมกับ Explainable AI: การเปรียบเทียบ SHAP กับ Pearson Correlation
+# Stock Price Direction Prediction Using LSTM + Attention Mechanism with Explainable AI (SHAP vs Correlation)
 
-**Project Title (Eng)**: Stock Price Direction Prediction Using LSTM + Attention Mechanism with Explainable AI (SHAP vs Correlation)
+**Advisor**: ผศ.ดร.วิรัตน์ จารีวงศ์ไพบูลย์
 
-**อาจารย์ที่ปรึกษาโครงงาน**: ผศ.ดร.วิรัตน์ จารีวงศ์ไพบูลย์
-
-**ผู้จัดทำโครงงาน**:
+**Authors**:
 
 1. นายวชิรวิทย์ แก้วแดง
 2. นายธำรง แซ่เฉิน
 
+## Overview
+
+**Question.** Can technical and market-wide indicators predict the 3-day direction (Up/Down) of large US stocks, and do the two common ways of ranking feature importance, Pearson correlation and SHAP, agree on which indicators matter?
+
+**Short answer.** The feature rankings disagree a lot, but the models have little predictive skill, so the rankings should be read as a description of what the models use, not as evidence of what drives prices. Details and caveats are in [Key findings](#key-findings) and [Limitations](#limitations).
+
+## Approach
+
+| Step | What was done |
+|---|---|
+| Data | Daily OHLCV from Yahoo Finance (`yfinance`) for 10 stocks in 5 sectors (NVDA, TSLA · JNJ, UNH · XOM, CVX · JPM, GS · AMZN, COST), plus S&P 500, bond yield and VIX. Jan 2020 to Apr 2025, 1,283 usable trading days per stock |
+| Features | 27 features: price/returns, trend, momentum, volume, market-wide (VIX added as an extra experiment) |
+| Target | Direction of the 3-day forward return (Up = 1). Time-ordered 80/20 train/test split |
+| Models | LSTM + attention (3 layers, hidden size 128, 60-day windows, focal loss); Random Forest and Logistic Regression as baselines; soft-voting ensemble |
+| Explainability | SHAP (`KernelExplainer`) vs absolute Pearson correlation with the target; cross-model consistency; sector-level view; effect of VIX features |
+
+## Key findings
+
+1. **Correlation and SHAP rank features very differently.** Examples from the notebook output: for NVDA, `Volatility_20d` is rank 1 by correlation but rank 19 by SHAP; for TSLA, `SP500_return` moves from rank 22 to rank 2; for JNJ, from rank 26 to rank 4.
+2. **`Bond_yield` shows up near the top of SHAP rankings for several stocks** (for example rank 1 for TSLA) while correlation ranks it low. <!-- TODO: replace with the exact count from your data, e.g. "in the SHAP top-5 for X of 10 stocks" -->
+3. **Predictive skill is close to chance.** Test accuracy of the LSTM ranged from about 0.49 to 0.60 across the 10 stocks, and ensemble AUC from about 0.50 to 0.66. Adding VIX features and ensembling did not give a consistent improvement.
+
+## Limitations
+
+Stated up front so the results are read correctly:
+
+- **Test set used for model selection.** In the submitted version, early stopping (best epoch by F1) and the decision threshold were both chosen on the test set, so reported metrics are optimistic. A validation split is planned.
+- **F1 on the "Up" class is misleading here.** Most stocks ended up with a low threshold (0.30), which makes the model predict Up almost every day. That gives an F1 close to a trivial "always Up" baseline, so accuracy and AUC are the more honest numbers.
+- **Scaler fitted on the full series** before the train/test split (minor leakage).
+- **SHAP estimated from 30 test samples** with `nsamples=100`, so the exact rankings are noisy and should be treated as indicative.
+- **Explaining a weak model.** With AUC near 0.5, SHAP tells us what the model relies on, not what moves the market.
+- **Single period and single split** (2020 to Apr 2025), overlapping 3-day targets, no transaction costs. This is a study of explainability methods, not a trading strategy.
 ---
 
-# Stock Price Direction Prediction using LSTM + Attention Mechanism with Explainable AI (SHAP vs Correlation)
-
-## Topic 1 — Prerequisites (สิ่งที่ต้องติดตั้งก่อน)
+## 1 — Prerequisites
 
 The following software must be installed before running this project:
 
@@ -25,13 +53,13 @@ The following software must be installed before running this project:
 
 ---
 
-## Topic 2 — Installation (วิธีติดตั้งโปรแกรม)
+## 2 — Installation
 
 ### Step 1 — Clone the repository
 
 ```bash
-git clone https://github.com/ComSciThammasatU-classroom_2568-2_CS403-SpecialProjects2--CSAR/2568-2_CS403_Final-Submission-68-1_43_wjr-r2.git
-cd 2568-2_CS403_Final-Submission-68-1_43_wjr-r2
+git clone https://github.com/Tumrong-Saechoen/Graduating-Project.git
+cd Graduating-Project
 ```
 
 ### Step 2 — Create and activate conda environment
@@ -63,7 +91,7 @@ This installs: `yfinance==1.3.0`, `pandas==2.3.3`, `numpy==2.2.6`, `matplotlib==
 
 ---
 
-## Topic 3 — Usage (วิธีการใช้งาน)
+## 3 — Usage
 
 ### Step 1 — Launch Jupyter Notebook
 
