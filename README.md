@@ -1,11 +1,10 @@
 # Stock Price Direction Prediction Using LSTM + Attention Mechanism with Explainable AI (SHAP vs Correlation)
 
-**Advisor**: ผศ.ดร.วิรัตน์ จารีวงศ์ไพบูลย์
+**Advisor**: Assistant Professor, Ph.D. Wirat Jareevongpiboon
 
 **Authors**:
-
-1. นายวชิรวิทย์ แก้วแดง
-2. นายธำรง แซ่เฉิน
+1. Wachirawit Kaewdaeng
+2. Tumrong Saechoen
 
 ## Overview
 
@@ -39,9 +38,15 @@ Stated up front so the results are read correctly:
 - **SHAP estimated from 30 test samples** with `nsamples=100`, so the exact rankings are noisy and should be treated as indicative.
 - **Explaining a weak model.** With AUC near 0.5, SHAP tells us what the model relies on, not what moves the market.
 - **Single period and single split** (2020 to Apr 2025), overlapping 3-day targets, no transaction costs. This is a study of explainability methods, not a trading strategy.
+
+## My contribution
+
+I wrote the project report. The code (data pipeline, model training and SHAP experiments) 
+was mainly implemented by my teammate, Wachirawit Kaewdaeng. I understand the overall design and results.
+
 ---
 
-## 1 — Prerequisites
+## Prerequisites
 
 The following software must be installed before running this project:
 
@@ -53,7 +58,7 @@ The following software must be installed before running this project:
 
 ---
 
-## 2 — Installation
+## Installation
 
 ### Step 1 — Clone the repository
 
@@ -91,7 +96,7 @@ This installs: `yfinance==1.3.0`, `pandas==2.3.3`, `numpy==2.2.6`, `matplotlib==
 
 ---
 
-## 3 — Usage
+## Usage
 
 ### Step 1 — Launch Jupyter Notebook
 
